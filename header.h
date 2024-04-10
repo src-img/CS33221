@@ -14,8 +14,6 @@
 #define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \
                                    } while (0) //yeah idk how this works at all ty man7
 
-const int maxLoops = 5;
-
 typedef struct {
     char buffer[tableMax];
     sem_t vacant;

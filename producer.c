@@ -9,7 +9,6 @@ int main() {
                                                                         open it up for read/write |
                                                                         close if it's borked,
                                                                         directory permissions..? MAN7's were broken; open documentation has... more? I don't understand them...*/
-    printf("huh???");
     if (sharedMem == -1) errExit("shm_open");
     
     if (ftruncate(sharedMem, sizeof(table)) == -1) errExit("ftruncate");//if truncating sharedMem to the size of the table returns an error, something is wrong. believe this is for issues w the size
@@ -33,23 +32,33 @@ int main() {
         producer->buffer[i] = '?';
     }
 
+for (int i = 0; i < tableMax; ++i) {
+    sem_wait(&producer ->vacant);
+    char thing = (char) ((rand() % 26) + ((int) ('a')));
+    producer -> buffer[i] = thing;
+    printf("%s", "added '");
+	printf("%c", thing);
+	printf("%s", "' to table.\n");
+    sem_post(&producer->occupied);
+}
+
     //producing
-    int produced = 0;
-    while (produced < maxLoops) {
-        while(producer->buffer[0] != '?' && producer->buffer[1] != '?'); //busywork. while buffer has Thing In It do nothing
-        if (sem_wait(&producer->vacant) == -1) errExit("sem_wait");  //locks vacant; if it returns an error, exit 
-        char thing = 'a';
-        for (int i = 0; i < tableMax; ++i) { //produces thing to throw in the table
-            thing = (char) ((rand() % 26) + ((int) ('a')));
-            producer->buffer[i] = thing; //throws thing in table
-            printf("%s", "added '");
-	        printf("%c", thing);
-	        printf("%s", "' to table.\n");
-        }
-        ++produced;
-        if (sem_post(&producer->occupied) == -1) errExit("sem_post"); //unlocks occupied; if it returns an error, exit
-    }
-    shm_unlink("/tableMemory"); //closes shared memory
+    // int produced = 0;
+    // while (produced < maxLoops) {
+    //     while(producer->buffer[0] != '?' && producer->buffer[1] != '?'); //busywork. while buffer has Thing In It do nothing
+    //     if (sem_wait(&producer->vacant) == -1) errExit("sem_wait");  //locks vacant; if it returns an error, exit 
+    //     char thing = 'a';
+    //     for (int i = 0; i < tableMax; ++i) { //produces thing to throw in the table
+    //         thing = (char) ((rand() % 26) + ((int) ('a')));
+    //         producer->buffer[i] = thing; //throws thing in table
+    //         printf("%s", "added '");
+	//         printf("%c", thing);
+	//         printf("%s", "' to table.\n");
+    //     }
+    //     ++produced;
+    //     if (sem_post(&producer->occupied) == -1) errExit("sem_post"); //unlocks occupied; if it returns an error, exit
+    // }
+    //shm_unlink("/tableMemory"); //closes shared memory
 
     exit(EXIT_SUCCESS);
 
