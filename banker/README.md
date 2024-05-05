@@ -34,7 +34,7 @@ Running:
 `$ ./banker `
 
 ## Personal Challenges
-Vectors are tricky! I've not used C++ in a bitm and it took me a while to get back into the swing of it. Figuring out how to implement matricies and correctly resize the vectors took most of the project time.
+Vectors are tricky! I've not used C++ in a bit, and it took me a while to get back into the swing of it. Figuring out how to implement matricies and correctly resize the vectors took most of the project time.
 Additionally, parsing the file was unexpectedly challenging. My main priority was keeping the code as straightforward as possible, and I feel the switch ended up being a tidy way of logically chunking out the 3 different matricies.
 
 ## Resources
